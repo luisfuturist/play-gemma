@@ -6,13 +6,17 @@ from langchain_ollama import ChatOllama
 # --- 1. Define your structured Task model ---
 class Task(BaseModel):
     title: str = Field(description="The title of the task")
-    description: Optional[str] = Field(description="Detailed description of the task", default=None)
     priority: Optional[str] = Field(
         description="Priority level of the task", 
         default="medium",
         pattern="^(low|medium|high)$"
     )
-    due_date: Optional[str] = Field(description="Due date in ISO format (YYYY-MM-DD)", default=None)
+    target_date: Optional[str] = Field(description="The day it's supposed to be done in ISO format (YYYY-MM-DD)", default=None)
+    target_time: Optional[str] = Field(description="The time it's supposed to be done in 24-hour format (HH:MM)", default=None)
+    notes: Optional[str] = Field(description="Any additional notes about the task", default=None)
+    repeats_every: Optional[str] = Field(description="How often the task should be repeated", default=None)
+    repeats_start_date: Optional[str] = Field(description="The date from which the task should be repeated. Signature: today | tomorrow | YYYY-MM-DD", default=None)
+    repeats_end_date: Optional[str] = Field(description="The date until which the task should be repeated. Signature: never | today | tomorrow | YYYY-MM-DD | after x occurrences", default=None)
 
 class TaskList(BaseModel):
     tasks: List[Task] = Field(description="List of extracted tasks")
